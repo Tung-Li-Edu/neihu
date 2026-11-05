@@ -33,8 +33,14 @@
   var APP_URL = "https://script.google.com/macros/s/AKfycbxHCrxoyjwraLFNYG1_5SbsIm1rAiceqBCpFCxNE-ZxPNzEEUflt-kVNLdGOz0JcMU/exec";
 
   // 老師的專屬網址參數（例如 ?t=xxxx 或 ?admin）原封不動帶進系統
+  // 第一次帶參數打開時記在手機裡；之後從桌面圖示打開（沒有參數）就自動帶回
+  var KEY = "neihu-entry", q = location.search;
+  try {
+    if (q && q.length > 1) localStorage.setItem(KEY, q);
+    else q = localStorage.getItem(KEY) || "";
+  } catch (e) {}
   var frame = document.getElementById("app");
-  frame.src = APP_URL + location.search;
+  frame.src = APP_URL + q;
   frame.addEventListener("load", function () {
     document.getElementById("splash").classList.add("hide");
   });
