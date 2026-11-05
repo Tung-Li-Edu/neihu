@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>內湖東立家教</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="內湖東立家教">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+  html,body{margin:0;height:100%;background:#fff;overflow:hidden}
+  #app{position:fixed;inset:0;width:100%;height:100%;border:0;
+       padding-top:env(safe-area-inset-top);box-sizing:border-box;background:#fff}
+  #splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;
+          justify-content:center;background:#fff;transition:opacity .35s;z-index:2;
+          font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:#20376c}
+  #splash img{width:min(56vw,240px);height:auto}
+  #splash b{margin-top:6px;font-size:30px;letter-spacing:.3em;font-family:"Songti TC","Noto Serif TC",serif}
+  #splash p{margin-top:18px;font-size:15px;letter-spacing:.1em;opacity:.7}
+  #splash.hide{opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="splash"><img src="icon-512.png" alt="東立文理"><b>東立文理</b><p>載入中…</p></div>
+<iframe id="app" title="內湖東立家教" allow="clipboard-write"></iframe>
+<script>
+  // ★ 東立內湖家教系統 的網頁應用程式網址（結尾是 /exec）
+  var APP_URL = "https://script.google.com/macros/s/AKfycbxHCrxoyjwraLFNYG1_5SbsIm1rAiceqBCpFCxNE-ZxPNzEEUflt-kVNLdGOz0JcMU/exec";
+
+  // 老師的專屬網址參數（例如 ?t=xxxx 或 ?admin）原封不動帶進系統
+  var frame = document.getElementById("app");
+  frame.src = APP_URL + location.search;
+  frame.addEventListener("load", function () {
+    document.getElementById("splash").classList.add("hide");
+  });
+  setTimeout(function(){ document.getElementById("splash").classList.add("hide"); }, 8000);
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  }
+</script>
+</body>
+</html>
