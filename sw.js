@@ -1,5 +1,5 @@
 // 只快取 App 外殼（圖示、啟動畫面），資料一律即時從系統讀取
-const CACHE = "neihu-shell-v1";
+const CACHE = "neihu-shell-v2";
 const SHELL = ["./", "index.html", "manifest.json", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {

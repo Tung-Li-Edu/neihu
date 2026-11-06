@@ -32,13 +32,32 @@
   // ★ 東立內湖家教系統 的網頁應用程式網址（結尾是 /exec）
   var APP_URL = "https://script.google.com/macros/s/AKfycbxHCrxoyjwraLFNYG1_5SbsIm1rAiceqBCpFCxNE-ZxPNzEEUflt-kVNLdGOz0JcMU/exec";
 
-  // 老師的專屬網址參數（例如 ?t=xxxx 或 ?admin）原封不動帶進系統
+  // 老師的專屬網址參數（例如 ?k=xxxx 或 ?admin）原封不動帶進系統
   // 第一次帶參數打開時記在手機裡；之後從桌面圖示打開（沒有參數）就自動帶回
   var KEY = "neihu-entry", q = location.search;
   try {
     if (q && q.length > 1) localStorage.setItem(KEY, q);
     else q = localStorage.getItem(KEY) || "";
   } catch (e) {}
+  // ★ 幫裡面的系統保管登入資料、還沒上傳完的簽名（iPhone 會清掉嵌入網頁自己的資料，存在 App 這層才記得住）
+  //   只接受 Google 系統送來的請求，而且只存取 jiajiao_ 開頭的資料
+  window.addEventListener("message", function (e) {
+    if (!/^https:\/\/[a-z0-9-]+\.googleusercontent\.com$/.test(e.origin)) return;
+    var d = e.data || {};
+    try {
+      if (d.type === "neihu-store-get") {
+        var items = {};
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i);
+          if (k && k.indexOf("jiajiao_") === 0) items[k] = localStorage.getItem(k);
+        }
+        e.source.postMessage({ type: "neihu-store-all", items: items }, e.origin);
+      } else if (d.type === "neihu-store-set" && typeof d.key === "string" && d.key.indexOf("jiajiao_") === 0) {
+        if (d.value == null) localStorage.removeItem(d.key); else localStorage.setItem(d.key, String(d.value));
+      }
+    } catch (x) {}
+  });
+
   var frame = document.getElementById("app");
   frame.src = APP_URL + q;
   frame.addEventListener("load", function () {
