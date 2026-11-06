@@ -58,8 +58,15 @@
     } catch (x) {}
   });
 
+  // ★ 加速：把記住的登入資料一起帶進系統，系統打開時就直接附上資料，不用再跑一趟
+  var src = APP_URL + q;
+  try {
+    var slot = /[?&]admin(=|&|$)/.test(q) ? "jiajiao_tok_admin" : ((/[?&]k=([^&]+)/.exec(q) || [])[1] ? "jiajiao_tok_" + decodeURIComponent(/[?&]k=([^&]+)/.exec(q)[1]) : "");
+    var tok = slot ? localStorage.getItem(slot) : "";
+    if (tok) src += (q ? "&" : "?") + "_t=" + encodeURIComponent(tok);
+  } catch (e) {}
   var frame = document.getElementById("app");
-  frame.src = APP_URL + q;
+  frame.src = src;
   frame.addEventListener("load", function () {
     document.getElementById("splash").classList.add("hide");
   });
