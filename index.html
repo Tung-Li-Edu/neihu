@@ -21,12 +21,16 @@
           font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC",sans-serif;color:#20376c}
   #splash img{width:min(56vw,240px);height:auto}
   #splash b{margin-top:6px;font-size:30px;letter-spacing:.3em;font-family:"Songti TC","Noto Serif TC",serif}
-  #splash p{margin-top:18px;font-size:15px;letter-spacing:.1em;opacity:.7}
+  #splash i{margin-top:10px;font-style:normal;font-size:17px;letter-spacing:.25em;font-weight:600}
+  #splash .bar{margin-top:26px;width:min(48vw,180px);height:4px;border-radius:2px;background:#e3e8f2;overflow:hidden;position:relative}
+  #splash .bar::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:100%;border-radius:2px;background:#20376c;animation:run 1.2s ease-in-out infinite}
+  @keyframes run{0%{left:-40%}100%{left:100%}}
+  #splash p{margin-top:12px;font-size:13px;letter-spacing:.1em;opacity:.6}
   #splash.hide{opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
-<div id="splash"><img src="icon-512.png" alt="東立文理"><b>東立文理</b><p>載入中…</p></div>
+<div id="splash"><img src="icon-512.png" alt="東立文理"><b>東立文理</b><i>內湖最有溫度的補習班</i><div class="bar"></div><p id="msg">載入中…</p></div>
 <iframe id="app" title="內湖東立家教" allow="clipboard-write"></iframe>
 <script>
   // ★ 東立內湖家教系統 的網頁應用程式網址（結尾是 /exec）
@@ -70,7 +74,8 @@
   frame.addEventListener("load", function () {
     document.getElementById("splash").classList.add("hide");
   });
-  setTimeout(function(){ document.getElementById("splash").classList.add("hide"); }, 8000);
+  setTimeout(function(){ var m = document.getElementById("msg"); if (m) m.textContent = "正在讀取資料…"; }, 2500);
+  setTimeout(function(){ document.getElementById("splash").classList.add("hide"); }, 15000);
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(function(){});
